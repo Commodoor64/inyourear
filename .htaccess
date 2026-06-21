@@ -1,0 +1,18 @@
+# ---- Password protection (whole site) ----
+AuthType Basic
+AuthName "Private"
+AuthUserFile /home/urmvvkte/.htpasswd
+Require valid-user
+
+# ---- Force HTTPS (so the password isn't sent in plain text) ----
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# ---- Block the database and secret/backup files from being served ----
+<FilesMatch "\.(db|sqlite|sqlite3|env|ini|log|bak)$">
+    Require all denied
+</FilesMatch>
+
+# ---- Block access to the .git directory ----
+RedirectMatch 404 /\.git
