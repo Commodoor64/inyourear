@@ -31,6 +31,6 @@ $stmt = db()->prepare(
 );
 $stmt->execute([$author, $message]);
 
-// echo json_encode(['ok' => true, 'id' => db()->lastInsertId()]);
-// echo "test";
+echo json_encode(['ok' => true, 'id' => db()->lastInsertId()]);
 echo $author . " " . $message;
+

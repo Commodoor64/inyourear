@@ -4,13 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In Your Ear</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2/dist/htmx.min.js"></script>
 </head>
 <body>
     lets test this thing!
 
-    <form action="api/upload.php" method="post" enctype="multipart/form-data">
+    <form id="postcard-form">
         <textarea name="message" placeholder="Write your message..."></textarea>
         <button type="submit">Send Postcard</button>
     </form>
+
+    <section id="grid">
+         <section id="grid"
+           hx-get="api/postcards.php"
+           hx-trigger="load, every 15s, refresh"
+           hx-swap="innerHTML">
+    loading…
+  </section>
+    </section>
 </body>
+<script type="module" src="script.js"></script>
 </html>
