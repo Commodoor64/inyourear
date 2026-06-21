@@ -11,7 +11,7 @@ function db(): PDO {
     //  - On the server: that variable isn't set, so it falls back to the
     //    absolute path in your home dir, OUTSIDE public_html.
     // Change the fallback to YOUR real path (run `echo ~/app_data/postcards.db`).
-    $path = getenv('POSTCARD_DB') ?: '/home/urmvvkte/app_data/postcards.db';
+    $path = getenv('POSTCARD_DB') ?: '~/app_data/postcards.db';
     // $path = getenv('POSTCARD_DB') ?: '/Users/alexanderpink/Desktop/inearsite/postcards.db';
 
     $pdo = new PDO('sqlite:' . $path);
