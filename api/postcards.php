@@ -7,10 +7,10 @@ $rows = db()
              FROM postcards ORDER BY id DESC LIMIT 200')
     ->fetchAll(PDO::FETCH_ASSOC);
 
-echo '<button id="new-card" class="card new-card" type="button">+ new postcard</button>';
+echo '<button id="new-card" class="card new-card" type="button">+ new note</button>';
 
 if (!$rows) {
-    echo '<p class="empty">No postcards yet — make the first one.</p>';
+    echo '<p class="empty">No notes yet — make the first one.</p>';
     return;
 }
 

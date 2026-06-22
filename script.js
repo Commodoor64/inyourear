@@ -245,3 +245,74 @@ menu.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
     if (!dd.contains(e.target)) menu.hidden = true;
 });
+
+function updateTimes() {
+    const opts = { hour: '2-digit', minute: '2-digit', hour12: false };
+
+    document.getElementById('xandi-time').textContent =
+        new Intl.DateTimeFormat('en-GB', { ...opts, timeZone: 'Europe/Madrid' }).format(new Date());
+
+    document.getElementById('allie-time').textContent =
+        new Intl.DateTimeFormat('en-GB', { ...opts, timeZone: 'America/New_York' }).format(new Date());
+}
+
+updateTimes();                 // run immediately
+setInterval(updateTimes, 1000 * 30);   // refresh every 30s
+
+function timeAgo(seconds) {
+  if (seconds < 20)   return ['online now', 'green'];
+  if (seconds < 60)   return ['just now', 'yellow'];
+
+  const mins = Math.floor(seconds / 60);
+  if (mins < 60)  return [`${mins} minute${mins === 1 ? '' : 's'} ago`, "yellow"];
+
+  const hrs = Math.floor(seconds / 3600);
+  if (hrs < 24)   return [`${hrs} hour${hrs === 1 ? '' : 's'} ago`, "orange"];
+
+  const days = Math.floor(seconds / 86400);
+  if (days < 7)   return [`${days} day${days === 1 ? '' : 's'} ago`, 'red'];
+
+  // Older than a week: show an actual date instead of a huge "ago" number.
+  // (This needs the absolute timestamp — see note below.)
+  return null;   // signal: fall back to a date
+}
+
+function renderPerson(elId, person) {
+  const el = document.getElementById(elId);
+  if (!person) {
+    el.textContent = 'never';
+    el.className = 'highlight red';
+    return;
+  }
+  if (person.online) {
+    el.textContent = 'here now';
+    el.className = 'highlight green';
+    return;
+  }
+  const result = timeAgo(person.seconds_ago);
+  if (result === null) {               // older than a week
+    el.textContent = new Date(person.last_seen * 1000).toLocaleDateString();
+    el.className = 'highlight red';
+    return;
+  }
+  const [text, color] = result;
+  el.textContent = text;
+  el.className = 'highlight ' + color;
+}
+async function ping() {
+  try {
+    const res = await fetch('api/presence.php');
+    const { people } = await res.json();
+
+    // people is an array; pull out each person by username.
+    const byName = Object.fromEntries(people.map(p => [p.username, p]));
+
+    renderPerson('xandi-presence', byName['xandi']);
+    renderPerson('allie-presence', byName['allie']);
+  } catch (e) {
+    /* offline / fetch failed — leave both indicators showing their last value */
+  }
+}
+
+ping();                     // run immediately on load
+setInterval(ping, 10000);   // and every 10s
