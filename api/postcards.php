@@ -20,7 +20,15 @@ foreach ($rows as $r) {
     $img = $r['image_path'] ? '<img src="' . htmlspecialchars($r['image_path'], ENT_QUOTES) . '">' : '';
     $msg    = nl2br(htmlspecialchars($r['message'], ENT_QUOTES));
     $author = htmlspecialchars($r['author'], ENT_QUOTES);
-    $when   = htmlspecialchars($r['created_at'], ENT_QUOTES);
+       $zones = [
+        'allie' => 'America/New_York',
+        'xandi' => 'Europe/Madrid',
+    ];
+    $tz = $zones[strtolower($r['author'])] ?? 'UTC';
+
+    $dt = new DateTime($r['created_at'], new DateTimeZone('UTC'));
+    $dt->setTimezone(new DateTimeZone($tz));
+    $when = htmlspecialchars($dt->format('M j, Y g:i A'), ENT_QUOTES);
     $closerColor = htmlspecialchars($r['closerColor'], ENT_QUOTES);
 
     echo '<figure class="card" data-id="' . (int)$r['id'] . '">'
