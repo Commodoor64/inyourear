@@ -333,3 +333,39 @@ textarea::selection {
 .dd-menu[hidden] {
     display: none;
 }
+
+@media (max-width: 700px) {
+    /* postcards: single column */
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* composer: stack canvas above the text area */
+    .form-container {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 16px;
+    }
+
+    /* canvas: shrink display size, keep the 600x400 buffer */
+    #pad {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+    }
+
+    /* text side: stop the hard 600px width */
+    .message-container {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        min-height: 300px;
+    }
+
+    /* keep the controls from overflowing */
+    .controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
