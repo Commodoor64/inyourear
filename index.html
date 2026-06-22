@@ -5,23 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In Your Ear</title>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2/dist/htmx.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    lets test this thing!
-
-    <form id="postcard-form">
-        <textarea name="message" placeholder="Write your message..."></textarea>
-        <button type="submit">Send Postcard</button>
-    </form>
-
-    <section id="grid">
+    <div class="overlay hidden">
+    <section id="composer" class = "form-container">
+     
+        <div class = "canvas-container">
+        <canvas id="pad" width = 600 height = 400></canvas>
+          <div class="controls">
+            <label id="photo-label" for="photo" class="button">Choose photo</label>
+            <input type="file" id="photo" accept="image/*" hidden>
+            <button id = "red" class="button"><div class = "color"></div></button>
+            <button id = "green" class="button"><div class = "color"></div></button>
+            <button id = "blue" class="button"><div class = "color"></div></button>
+            <button id = "orange" class="button"><div class = "color"></div></button>
+            <button id = "magenta" class="button"><div class = "color"></div></button>
+            <button id = "yellow" class="button"><div class = "color"></div></button>
+            <button id = "black" class="button"><div class = "color"></div></button>
+            <button id = "clear" class="button">Clear</button>
+           
+            
+          </div>
+          </div>
+          <div class="text-container">
+            <div class="message-container">
+            <textarea id="message" placeholder="write something…" maxlength="1000"></textarea>
+        <div class = "closers-container">
+            <div class="dd" id="closers">
+                    <button type="button" class="dd-toggle button">Love ▾</button>
+                        <ul class="dd-menu" hidden>
+                            <li class="red"     data-value="Love">Love</li>
+                            <li class="blue"    data-value="I MISS YOU">I MISS YOU</li>
+                            <li class="green"   data-value="AJIDLIUHWLIUHAJSLJJALKAHLS">AJIDLIUHWLIUHAJSLJJALKAHLS</li>
+                            <li class="yellow"  data-value="AHHHH">AHHHH</li>
+                            <li class="magenta" data-value="I Hate You">I Hate You</li>
+                            <li class="orange"  data-value="Bruh">Bruh</li>
+                        </ul>
+                </div>
+                <p id="author">Allie</p>
+        </div>
+    </div>
+            <button id="send" type="button" class = "button">send -></button>
+            
+        </div>
+    </section>
+</div>
+    
          <section id="grid"
+         class="grid-container"
            hx-get="api/postcards.php"
            hx-trigger="load, every 15s, refresh"
            hx-swap="innerHTML">
-    loading…
-  </section>
+ 
     </section>
 </body>
 <script type="module" src="script.js"></script>
+
 </html>
